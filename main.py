@@ -23,11 +23,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 
-from vk_miniapp.backend.config import (
+from config import (
     VK_CLID, MIN_DISCOUNT, MIN_RATING, MAX_PRODUCTS, MODE, ALLOWED_ORIGINS,
     VK_GROUP_ID, VK_ACCESS_TOKEN, VK_APP_ID, POST_INTERVAL
 )
-from vk_miniapp.backend.promocodes import promocode_manager
+from promocodes import promocode_manager
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
