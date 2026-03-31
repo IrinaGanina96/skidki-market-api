@@ -1,8 +1,8 @@
-# vk_miniapp/backend/main.py
+# main.py
 """
 Бэкенд для VK Mini App
 Возвращает тематические подборки скидок через API
-И автоматически публикует подборки в VK-сообщество (только текст, без картинок)
+И автоматически публикует подборки в VK-сообщество с картинками и промокодами
 """
 
 import sys
@@ -16,8 +16,6 @@ from collections import defaultdict
 from typing import List, Dict, Optional, Tuple
 from datetime import datetime
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -27,7 +25,6 @@ from config import (
     VK_CLID, MIN_DISCOUNT, MIN_RATING, MAX_PRODUCTS, MODE, ALLOWED_ORIGINS,
     VK_GROUP_ID, VK_ACCESS_TOKEN, VK_APP_ID, POST_INTERVAL
 )
-
 from promocodes import promocode_manager
 
 logging.basicConfig(
@@ -136,7 +133,7 @@ UNIVERSAL_HEADERS = [
 ]
 
 CTA = [
-    "Нажми на ссылку, чтобы купить со скидкой!"
+    "👇 Нажми на ссылку, чтобы купить со скидкой!"
 ]
 
 SEPARATOR = "─" * 30
@@ -307,7 +304,7 @@ def format_collection_post(products: List[Dict], category: str = None, include_p
     return caption
 
 
-# ========== МОК-ДАННЫЕ ==========
+# ========== МОК-ДАННЫЕ С rating_count ==========
 
 MOCK_PRODUCTS = [
     {
@@ -352,7 +349,7 @@ def get_products(min_discount: int = 30, limit: int = 30) -> List[Dict]:
     """Получает товары (мок или реальные)"""
     if MODE == "real" and VK_CLID:
         try:
-            from shared.market_parser import YandexMarketParser
+            from market_parser import YandexMarketParser
             parser = YandexMarketParser(VK_CLID, "rubles", MIN_RATING)
             products = parser.search_discounts(min_discount=min_discount, limit=limit)
             formatted = []
@@ -508,6 +505,7 @@ class OfferResponse(BaseModel):
     old_price: int
     discount: int
     rating: float
+    rating_count: Optional[int] = None
     url: str
     picture: Optional[str] = None
 
