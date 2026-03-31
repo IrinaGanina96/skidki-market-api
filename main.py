@@ -27,6 +27,7 @@ from config import (
     VK_CLID, MIN_DISCOUNT, MIN_RATING, MAX_PRODUCTS, MODE, ALLOWED_ORIGINS,
     VK_GROUP_ID, VK_ACCESS_TOKEN, VK_APP_ID, POST_INTERVAL
 )
+
 from promocodes import promocode_manager
 
 logging.basicConfig(
