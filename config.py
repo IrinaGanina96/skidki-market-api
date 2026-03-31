@@ -39,6 +39,7 @@ ALLOWED_ORIGINS = [
     "https://m.vk.com",
     "https://localhost",
     "http://localhost",
+    "https://irinaganina96.github.io",
     "http://127.0.0.1",
     "null"
 ]
